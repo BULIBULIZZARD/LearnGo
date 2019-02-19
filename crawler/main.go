@@ -18,14 +18,16 @@ func main() {
 	}
 	e := engine.ConcurrentEngine{
 		Scheduler:        &scheduler.QueuedScheduler{},
-		WorkerCount:      98,
+		WorkerCount:      1,
 		ItemChan:         itemChan,
 		RequestProcessor: engine.Worker,
 	}
 	e.Run(engine.Request{
 		//Url:    "http://www.zhenai.com/zhenghun",
-		Url:    "http://www.chinashorttrack.com/jscs/",
-		Parser: engine.NewFuncParser(parser.ParseContestList, "ParseCityList"),
+		//Url:    "http://www.chinashorttrack.com/jscs/",
+		//Parser: engine.NewFuncParser(parser.ParseContestList, "ParseContestList"),
+		Url:    "http://www.chinashorttrack.com/jscs/bsrc1.aspx?id=90",
+		Parser: engine.NewFuncParser(parser.ParseMatchList, "ParseMatchList"),
 	})
 
 }

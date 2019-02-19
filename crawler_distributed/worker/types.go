@@ -4,10 +4,12 @@ import (
 	"file/learngo/crawler/engine"
 	"file/learngo/crawler_distributed/config"
 	"file/learngo/crawler/zhenai/parser"
-	"github.com/pkg/errors"
 	"fmt"
+	"github.com/pkg/errors"
 	"log"
 )
+import skate  "file/learngo/crawler/skate/parser"
+
 
 type SerializedParser struct {
 	Name string
@@ -72,6 +74,10 @@ func DeserializeResult(r ParseResult) (engine.ParseResult){
 
 func deserializeParser(p SerializedParser) (engine.Parser, error) {
 	switch p.Name {
+	case config.ParseContestList:
+		return engine.NewFuncParser(skate.ParseContestList, config.ParseContestList), nil
+	case config.ParseMatchList:
+		return engine.NewFuncParser(skate.ParseMatchList, config.ParseMatchList), nil
 	case config.ParseCityList:
 		return engine.NewFuncParser(parser.ParseCityList, config.ParseCityList), nil
 	case config.ParseCity:

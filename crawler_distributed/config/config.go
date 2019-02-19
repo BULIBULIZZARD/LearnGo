@@ -2,11 +2,12 @@ package config
 
 const (
 	// Parser names
-	ParseCity     = "ParseCity"
-	ParseCityList = "ParseCityList"
-	ParseProfile  = "ParseProfile"
-	NilParser     = "NilParser"
-
+	ParseCity        = "ParseCity"
+	ParseCityList    = "ParseCityList"
+	ParseProfile     = "ParseProfile"
+	NilParser        = "NilParser"
+	ParseMatchList   = "ParseMatchList"
+	ParseContestList = "ParseContestList"
 	// ElasticSearch
 	ElasticIndex = "dating_show"
 

@@ -1,5 +1,7 @@
 package engine
 
+import "log"
+
 type ConcurrentEngine struct {
 	Scheduler        Scheduler
 	WorkerCount      int
@@ -36,18 +38,19 @@ func (e *ConcurrentEngine) Run(seeds ...Request) {
 
 	for {
 		result := <-out
-		for _, item := range result.Items {
-			go func() {
-				e.ItemChan <- item
-			}()
-		}
-
 		for _, request := range result.Requests {
 			if isDuplicate(request.Url) {
 				continue
 			}
 			e.Scheduler.Submit(request)
 		}
+
+		for _, item := range result.Items {
+			go func(item Item) {
+				e.ItemChan <- item
+			}(item)
+		}
+
 	}
 }
 func (e *ConcurrentEngine) createWorker(in chan Request, out chan ParseResult, ready ReadyNotifier) {
@@ -57,6 +60,7 @@ func (e *ConcurrentEngine) createWorker(in chan Request, out chan ParseResult, r
 			request := <-in
 			result, err := e.RequestProcessor(request)
 			if err != nil {
+				log.Printf("concurrent error %v", err)
 				continue
 			}
 			out <- result
